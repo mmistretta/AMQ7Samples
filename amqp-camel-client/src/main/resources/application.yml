@@ -1,0 +1,7 @@
+
+# the name of Camel
+camel.springboot.name = MyCamel
+logging.level.org.springframework = DEBUG
+logging.level.org.apache.camel.spring.boot = DEBUG
+logging.level.org.apache.camel.impl = DEBUG
+logging.level.sample.camel = DEBUG
