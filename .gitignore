@@ -31,5 +31,16 @@ data
 data/
 data/
 
+lock
+/lock
+/lock/
+lock/
+lock/
+
+log
+/log
+/log/
+log/
+log/
 # OS Specific
 .DS_Store
