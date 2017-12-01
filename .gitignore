@@ -42,5 +42,10 @@ log
 /log/
 log/
 log/
+
+tmp
+/tmp
+/tmp/
+tmp/
 # OS Specific
 .DS_Store
