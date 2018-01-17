@@ -49,3 +49,13 @@ tmp
 tmp/
 # OS Specific
 .DS_Store
+
+#Shared Storage folders
+storage_1_2
+/storage_1_2
+/storage_1_2/
+storage_1_2/
+storage_3_4
+/storage_3_4
+/storage_3_4/
+storage_3_4/
