@@ -36,7 +36,7 @@
       <ha-policy>
          <replication>
             <slave>
-               <group-name>ha-group</group-name>
+               <group-name>ha-group2</group-name>
                <allow-failback>true</allow-failback>
             </slave>
          </replication>

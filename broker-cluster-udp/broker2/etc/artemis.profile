@@ -15,7 +15,7 @@
 # specific language governing permissions and limitations
 # under the License.
 
-ARTEMIS_HOME='/opt/amq-broker-7.0.3'
+ARTEMIS_HOME='/home/marycochran/software/amq-broker-7.0.3'
 ARTEMIS_INSTANCE='/home/marycochran/git/AMQ7Samples/broker-cluster-udp/broker2'
 
 # Cluster Properties: Used to pass arguments to ActiveMQ Artemis which can be referenced in broker.xml

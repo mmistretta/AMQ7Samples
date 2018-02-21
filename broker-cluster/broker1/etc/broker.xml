@@ -36,7 +36,7 @@
       <ha-policy>
          <replication>
             <master>
-               <group-name>ha-group</group-name>
+               <group-name>ha-group1</group-name>
                <check-for-live-server>true</check-for-live-server>
             </master>
          </replication>
