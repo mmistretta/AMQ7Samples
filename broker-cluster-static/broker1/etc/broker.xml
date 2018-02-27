@@ -87,7 +87,7 @@
          </address-setting>
 
          <address-setting match="#">
-            <dead-letter-address>DLQ</dead-letter-address>
+            <dead-letter-address>my-DLQ</dead-letter-address>
             <expiry-address>expiryQueue</expiry-address>
             <redelivery-delay>0</redelivery-delay>
             <max-size-bytes>-1</max-size-bytes>

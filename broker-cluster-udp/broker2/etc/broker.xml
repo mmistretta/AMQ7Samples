@@ -25,7 +25,7 @@ under the License.
    <core xmlns="urn:activemq:core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="urn:activemq:core ">
 
-      <name>0.0.0.0</name>
+      <name>broker2</name>
 
       <persistence-enabled>true</persistence-enabled>
 
@@ -112,16 +112,14 @@ under the License.
       </connectors>
     <discovery-groups>
       <discovery-group name="my-discovery-group">
-        <!--<local-bind-address>0.0.0.0</local-bind-address>-->
-        <group-address>${udp-address:231.7.7.7}</group-address>
+        <group-address>231.7.7.7</group-address>
         <group-port>9876</group-port>
         <refresh-timeout>10000</refresh-timeout>
       </discovery-group>
     </discovery-groups>
     <broadcast-groups>
       <broadcast-group name="my-broadcast-group">
-        <!--<local-bind-address>0.0.0.0</local-bind-address>-->
-        <group-address>${udp-address:231.7.7.7}</group-address>
+        <group-address>231.7.7.7</group-address>
         <group-port>9876</group-port>
         <broadcast-period>2000</broadcast-period>
         <connector-ref>my-connector</connector-ref>
@@ -134,7 +132,14 @@ under the License.
         <discovery-group-ref discovery-group-name="my-discovery-group"/>
        </cluster-connection>
     </cluster-connections>
-
+      <ha-policy>
+         <replication>
+            <master>
+               <group-name>ha-group2</group-name>
+               <check-for-live-server>true</check-for-live-server>
+            </master>
+         </replication>
+       </ha-policy>
       <security-settings>
          <security-setting match="#">
             <permission type="createNonDurableQueue" roles="amq"/>
