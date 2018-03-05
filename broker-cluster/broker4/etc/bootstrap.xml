@@ -27,10 +27,9 @@
    <!-- The web server is only bound to localhost by default -->
    <web bind="http://localhost:8164" path="web">
        <app url="redhat-branding" war="redhat-branding.war"/>
-       <app url="jolokia" war="jolokia.war"/>
-       <app url="hawtio" war="hawtio-no-slf4j.war"/>
        <app url="artemis-plugin" war="artemis-plugin.war"/>
        <app url="dispatch-hawtio-console" war="dispatch-hawtio-console.war"/>
+       <app url="console" war="console.war"/>
    </web>
 
 
