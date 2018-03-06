@@ -25,7 +25,7 @@
    <server configuration="${artemis.URI.instance}/etc/broker.xml"/>
 
    <!-- The web server is only bound to localhost by default -->
-   <web bind="http://localhost:8161" path="web">
+   <web bind="http://localhost:8167" path="web">
        <app url="redhat-branding" war="redhat-branding.war"/>
        <app url="artemis-plugin" war="artemis-plugin.war"/>
        <app url="dispatch-hawtio-console" war="dispatch-hawtio-console.war"/>
