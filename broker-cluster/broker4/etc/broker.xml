@@ -11,10 +11,10 @@
 
       <persistence-enabled>true</persistence-enabled>
       <journal-type>ASYNCIO</journal-type>
-      <paging-directory>./data/paging</paging-directory>
-      <bindings-directory>./data/bindings</bindings-directory>
-      <journal-directory>./data/journal</journal-directory>
-      <large-messages-directory>./data/large-messages</large-messages-directory>
+      <paging-directory>../../storage_2_4/paging</paging-directory>
+      <bindings-directory>../../storage_2_4/bindings</bindings-directory>
+      <journal-directory>../../storage_2_4/journal</journal-directory>
+      <large-messages-directory>../../storage_2_4/large-messages</large-messages-directory>
       <journal-datasync>true</journal-datasync>
       <journal-min-files>2</journal-min-files>
       <journal-pool-files>-1</journal-pool-files>
@@ -31,43 +31,35 @@
           <acceptor name="artemis">tcp://localhost:61619</acceptor>
       </acceptors>
       <connectors>
-          <connector name="my-connector">tcp://localhost:61619</connector>
+              <connector name="broker1">tcp://localhost:61616</connector>
+              <connector name="broker2">tcp://localhost:61617</connector>
+              <connector name="broker3">tcp://localhost:61618</connector>
+              <connector name="broker4">tcp://localhost:61619</connector>
       </connectors>
       <ha-policy>
-         <replication>
+         <shared-store>
             <slave>
-               <group-name>ha-group2</group-name>
-               <allow-failback>true</allow-failback>
-            </slave>
-         </replication>
+	       <allow-failback>true</allow-failback>
+               <failover-on-shutdown>true</failover-on-shutdown>
+	    </slave>
+	 </shared-store>
        </ha-policy>
 
-       <discovery-groups>
-          <discovery-group name="my-discovery-group">
-             <jgroups-file>test-jgroups-file_ping.xml</jgroups-file>
-             <jgroups-channel>activemq_broadcast_channel</jgroups-channel>
-             <refresh-timeout>10000</refresh-timeout>
-          </discovery-group>
-       </discovery-groups>
-    
-       <broadcast-groups>
-          <broadcast-group name="my-broadcast-group">
-             <broadcast-period>2000</broadcast-period>
-             <jgroups-file>test-jgroups-file_ping.xml</jgroups-file>
-             <jgroups-channel>activemq_broadcast_channel</jgroups-channel>
-             <connector-ref>my-connector</connector-ref>
-          </broadcast-group>
-       </broadcast-groups>
 
-     <cluster-connections>
+      <cluster-connections>
        <cluster-connection name="my-cluster">
          <address>jms</address>
-         <connector-ref>my-connector</connector-ref>
+         <connector-ref>broker3</connector-ref>
          <message-load-balancing>STRICT</message-load-balancing>
-         <discovery-group-ref discovery-group-name="my-discovery-group"/>
+         <static-connectors>
+            <connector-ref>broker2</connector-ref>
+            <connector-ref>broker1</connector-ref>
+            <connector-ref>broker3</connector-ref>
+         </static-connectors>
        </cluster-connection>
      </cluster-connections>
-      <security-settings>
+
+       <security-settings>
          <security-setting match="#">
             <permission type="createNonDurableQueue" roles="amq"/>
             <permission type="deleteNonDurableQueue" roles="amq"/>

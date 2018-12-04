@@ -7,14 +7,14 @@
    <core xmlns="urn:activemq:core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="urn:activemq:core " xmlns:xi="http://www.w3.org/2001/XInclude">
 
-      <name>AMQ1</name>
+      <name>AMQ2</name>
 
       <persistence-enabled>true</persistence-enabled>
       <journal-type>ASYNCIO</journal-type>
-      <paging-directory>./data/paging</paging-directory>
-      <bindings-directory>./data/bindings</bindings-directory>
-      <journal-directory>./data/journal</journal-directory>
-      <large-messages-directory>./data/large-messages</large-messages-directory>
+      <paging-directory>../../storage_2_4/paging</paging-directory>
+      <bindings-directory>../../storage_2_4/bindings</bindings-directory>
+      <journal-directory>../../storage_2_4/journal</journal-directory>
+      <large-messages-directory>../../storage_2_4/large-messages</large-messages-directory>
       <journal-datasync>true</journal-datasync>
       <journal-min-files>2</journal-min-files>
       <journal-pool-files>-1</journal-pool-files>
@@ -37,12 +37,11 @@
               <connector name="broker4">tcp://localhost:61619</connector>
       </connectors>
       <ha-policy>
-         <replication>
+         <shared-store>
             <master>
-               <group-name>ha-group2</group-name>
-               <check-for-live-server>true</check-for-live-server>
-            </master>
-         </replication>
+	        <failover-on-shutdown>true</failover-on-shutdown>
+	    </master>
+         </shared-store>
        </ha-policy>
      <cluster-connections>
        <cluster-connection name="my-cluster">
@@ -115,9 +114,7 @@
          </address>
 	 <address name="topic.foo">
             <multicast>
-        	<queue name="client123.topic.foo">
-			<filter string="NEWS &lt;&gt; 'technology'"/>
-		</queue>
+		<queue name="client123.topic.foo"/>
        		<queue name="client456.topic.foo"/>
       	    </multicast>
    	 </address>

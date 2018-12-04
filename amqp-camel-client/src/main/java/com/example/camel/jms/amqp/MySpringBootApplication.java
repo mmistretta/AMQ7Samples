@@ -23,9 +23,7 @@ public class MySpringBootApplication {
     @Bean
     public JmsConnectionFactory jmsConnectionFactory(){
     	JmsConnectionFactory jmsConnectionFactory = new JmsConnectionFactory();
-    	jmsConnectionFactory.setRemoteURI("amqps://localhost:5672?transport.verifyHost=false&transport.storeType=PKCS12"
-    			+ "&transport.trustStoreLocation=/home/marycochran/Documents/FedEx/new-broker-secure/old-certs/certificate.p12"
-    			+ "&transport.trustStorePassword=password&jms.username=sasluser2@mary.example&jms.password=password");
+    	jmsConnectionFactory.setRemoteURI("amqp://localhost:5672");
     	return jmsConnectionFactory;
     }
 

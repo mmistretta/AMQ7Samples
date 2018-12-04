@@ -9,9 +9,9 @@ public class ProducerRoute  extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        from("timer:producer?period=1000&repeatCount=6")
+        from("timer:producer?period=1000&repeatCount=10")
         	.routeId("producer")
-        	.to("jms:topic:topic.dyn")
+        	.to("jms:queue:test.queue")
         	.log(LoggingLevel.INFO, "Message sent");
     }
 }

@@ -11,10 +11,10 @@
 
       <persistence-enabled>true</persistence-enabled>
       <journal-type>ASYNCIO</journal-type>
-      <paging-directory>./data/paging</paging-directory>
-      <bindings-directory>./data/bindings</bindings-directory>
-      <journal-directory>./data/journal</journal-directory>
-      <large-messages-directory>./data/large-messages</large-messages-directory>
+      <paging-directory>../../storage_1_3/paging</paging-directory>
+      <bindings-directory>../../storage_1_3/bindings</bindings-directory>
+      <journal-directory>../../storage_1_3/journal</journal-directory>
+      <large-messages-directory>../../storage_1_3/large-messages</large-messages-directory>
       <journal-datasync>true</journal-datasync>
       <journal-min-files>2</journal-min-files>
       <journal-pool-files>-1</journal-pool-files>
@@ -31,40 +31,28 @@
           <acceptor name="artemis">tcp://localhost:61616</acceptor>
       </acceptors>
       <connectors>
-          <connector name="my-connector">tcp://localhost:61616</connector>
+         <connector name="broker1">tcp://localhost:61616</connector>
+              <connector name="broker2">tcp://localhost:61617</connector>
+              <connector name="broker3">tcp://localhost:61618</connector>
+              <connector name="broker4">tcp://localhost:61619</connector>
       </connectors>
       <ha-policy>
-         <replication>
+         <shared-store>
             <master>
-               <group-name>ha-group1</group-name>
-               <check-for-live-server>true</check-for-live-server>
-            </master>
-         </replication>
+	       <failover-on-shutdown>true</failover-on-shutdown>
+	    </master>
+         </shared-store>
        </ha-policy>
-
-       <discovery-groups>
-          <discovery-group name="my-discovery-group">
-             <jgroups-file>test-jgroups-file_ping.xml</jgroups-file>
-             <jgroups-channel>activemq_broadcast_channel</jgroups-channel>
-             <refresh-timeout>10000</refresh-timeout>
-          </discovery-group>
-       </discovery-groups>
-    
-       <broadcast-groups>
-          <broadcast-group name="my-broadcast-group">
-             <broadcast-period>2000</broadcast-period>
-             <jgroups-file>test-jgroups-file_ping.xml</jgroups-file>
-             <jgroups-channel>activemq_broadcast_channel</jgroups-channel>
-             <connector-ref>my-connector</connector-ref>
-          </broadcast-group>
-       </broadcast-groups>
-
-     <cluster-connections>
+<cluster-connections>
        <cluster-connection name="my-cluster">
          <address>jms</address>
-         <connector-ref>my-connector</connector-ref>
+         <connector-ref>broker1</connector-ref>
          <message-load-balancing>STRICT</message-load-balancing>
-         <discovery-group-ref discovery-group-name="my-discovery-group"/>
+     <static-connectors>
+            <connector-ref>broker2</connector-ref>
+            <connector-ref>broker3</connector-ref>
+            <connector-ref>broker4</connector-ref>
+         </static-connectors>
        </cluster-connection>
      </cluster-connections>
       <security-settings>
@@ -127,12 +115,11 @@
 	 <address name="topic.foo">
             <multicast>
         	<queue name="client123.topic.foo">
-			<filter string="NEWS &lt;&gt; 'technology'"/>
+			<!--	<filter string="NEWS &lt;&gt; 'technology'"/>-->
 		</queue>
        		<queue name="client456.topic.foo"/>
       	    </multicast>
    	 </address>
       </addresses>
-
    </core>
 </configuration>

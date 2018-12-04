@@ -11,10 +11,10 @@
 
       <persistence-enabled>true</persistence-enabled>
       <journal-type>ASYNCIO</journal-type>
-      <paging-directory>./data/paging</paging-directory>
-      <bindings-directory>./data/bindings</bindings-directory>
-      <journal-directory>./data/journal</journal-directory>
-      <large-messages-directory>./data/large-messages</large-messages-directory>
+      <paging-directory>../../storage_1_3/paging</paging-directory>
+      <bindings-directory>../../storage_1_3/bindings</bindings-directory>
+      <journal-directory>../../storage_1_3/journal</journal-directory>
+      <large-messages-directory>../../storage_1_3/large-messages</large-messages-directory>
       <journal-datasync>true</journal-datasync>
       <journal-min-files>2</journal-min-files>
       <journal-pool-files>-1</journal-pool-files>
@@ -37,12 +37,12 @@
               <connector name="broker4">tcp://localhost:61619</connector>
       </connectors>
       <ha-policy>
-         <replication>
+         <shared-store>
             <slave>
-               <group-name>ha-group1</group-name>
-               <allow-failback>true</allow-failback>
-            </slave>
-         </replication>
+	        <allow-failback>true</allow-failback>
+               <failover-on-shutdown>true</failover-on-shutdown>
+	    </slave>
+         </shared-store>
        </ha-policy>
      <cluster-connections>
        <cluster-connection name="my-cluster">
