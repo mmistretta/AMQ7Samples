@@ -26,7 +26,7 @@ under the License.
    <core xmlns="urn:activemq:core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="urn:activemq:core ">
 
-      <name>0.0.0.0</name>
+      <name>AMQ1</name>
 
 
       <persistence-enabled>true</persistence-enabled>
@@ -36,7 +36,7 @@ under the License.
            MAPPED: mmap files
            NIO: Plain Java Files
        -->
-      <journal-type>NIO</journal-type>
+      <journal-type>ASYNCIO</journal-type>
 
       <paging-directory>data/paging</paging-directory>
 
@@ -136,21 +136,47 @@ under the License.
                     See https://issues.apache.org/jira/browse/ARTEMIS-1644 for more information. -->
 
          <!-- Acceptor for every supported protocol -->
-         <acceptor name="artemis">tcp://0.0.0.0:61616?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=CORE,AMQP,STOMP,HORNETQ,MQTT,OPENWIRE;useEpoll=true;amqpCredits=1000;amqpLowCredits=300</acceptor>
-
-         <!-- AMQP Acceptor.  Listens on default AMQP port for AMQP traffic.-->
-         <acceptor name="amqp">tcp://0.0.0.0:5672?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=AMQP;useEpoll=true;amqpCredits=1000;amqpLowCredits=300</acceptor>
-
-         <!-- STOMP Acceptor. -->
-         <acceptor name="stomp">tcp://0.0.0.0:61613?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=STOMP;useEpoll=true</acceptor>
-
-         <!-- HornetQ Compatibility Acceptor.  Enables HornetQ Core and STOMP for legacy HornetQ clients. -->
-         <acceptor name="hornetq">tcp://0.0.0.0:5445?anycastPrefix=jms.queue.;multicastPrefix=jms.topic.;protocols=HORNETQ,STOMP;useEpoll=true</acceptor>
-
-         <!-- MQTT Acceptor -->
-         <acceptor name="mqtt">tcp://0.0.0.0:1883?tcpSendBufferSize=1048576;tcpReceiveBufferSize=1048576;protocols=MQTT;useEpoll=true</acceptor>
+         <acceptor name="artemis">tcp://localhost:61616</acceptor>
 
       </acceptors>
+
+<connectors>
+          <connector name="my-connector">tcp://localhost:61616</connector>
+      </connectors>
+      <ha-policy>
+         <replication>
+            <master>
+               <group-name>ha-group1</group-name>
+               <check-for-live-server>true</check-for-live-server>
+            </master>
+         </replication>
+       </ha-policy>
+
+       <discovery-groups>
+          <discovery-group name="my-discovery-group">
+             <jgroups-file>test-jgroups-file_ping.xml</jgroups-file>
+             <jgroups-channel>activemq_broadcast_channel</jgroups-channel>
+             <refresh-timeout>10000</refresh-timeout>
+          </discovery-group>
+       </discovery-groups>
+
+       <broadcast-groups>
+          <broadcast-group name="my-broadcast-group">
+             <broadcast-period>2000</broadcast-period>
+             <jgroups-file>test-jgroups-file_ping.xml</jgroups-file>
+             <jgroups-channel>activemq_broadcast_channel</jgroups-channel>
+             <connector-ref>my-connector</connector-ref>
+          </broadcast-group>
+       </broadcast-groups>
+
+     <cluster-connections>
+       <cluster-connection name="my-cluster">
+         <address>jms</address>
+         <connector-ref>my-connector</connector-ref>
+         <message-load-balancing>STRICT</message-load-balancing>
+         <discovery-group-ref discovery-group-name="my-discovery-group"/>
+       </cluster-connection>
+     </cluster-connections>
 
 
       <security-settings>
@@ -211,7 +237,14 @@ under the License.
                <queue name="ExpiryQueue" />
             </anycast>
          </address>
-
+ <address name="topic.foo">
+            <multicast>
+        	<queue name="client123.topic.foo">
+			<filter string="NEWS &lt;&gt; 'technology'"/>
+		</queue>
+       		<queue name="client456.topic.foo"/>
+      	    </multicast>
+   	 </address>
       </addresses>
 
 
