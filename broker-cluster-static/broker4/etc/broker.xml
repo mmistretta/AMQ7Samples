@@ -7,7 +7,7 @@
    <core xmlns="urn:activemq:core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="urn:activemq:core " xmlns:xi="http://www.w3.org/2001/XInclude">
 
-      <name>AMQ4</name>
+      <name>AMQ3</name>
 
       <persistence-enabled>true</persistence-enabled>
       <journal-type>ASYNCIO</journal-type>
@@ -28,7 +28,7 @@
       <critical-analyzer-policy>HALT</critical-analyzer-policy>
 
       <acceptors>
-          <acceptor name="artemis">tcp://localhost:61619</acceptor>
+          <acceptor name="artemis">tcp://localhost:61618</acceptor>
       </acceptors>
       <connectors>
             <connector name="broker1">tcp://localhost:61616</connector>
@@ -47,15 +47,16 @@
      <cluster-connections>
        <cluster-connection name="my-cluster">
          <address>jms</address>
-         <connector-ref>broker4</connector-ref>
+         <connector-ref>broker3</connector-ref>
          <message-load-balancing>STRICT</message-load-balancing>
      <static-connectors>
             <connector-ref>broker2</connector-ref>
-            <connector-ref>broker3</connector-ref>
             <connector-ref>broker1</connector-ref>
+            <connector-ref>broker4</connector-ref>
          </static-connectors>
        </cluster-connection>
      </cluster-connections>
+
       <security-settings>
          <security-setting match="#">
             <permission type="createNonDurableQueue" roles="amq"/>
