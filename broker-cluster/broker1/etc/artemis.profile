@@ -15,9 +15,10 @@
 # specific language governing permissions and limitations
 # under the License.
 
-ARTEMIS_HOME='/Users/marycochran/software/amq-broker-7.4.1'
+ARTEMIS_HOME='/Users/marycochran/software/amq-broker-7.7.0'
 ARTEMIS_INSTANCE='/Users/marycochran/git/AMQ7Samples/broker-cluster/broker1'
 ARTEMIS_DATA_DIR='/Users/marycochran/git/AMQ7Samples/broker-cluster/broker1/data'
+ARTEMIS_OOME_DUMP='/Users/marycochran/git/AMQ7Samples/broker-cluster/broker1/log/oom_dump.hprof'
 
 # The logging config will need an URI
 # this will be encoded in case you use spaces or special characters
@@ -30,8 +31,9 @@ ARTEMIS_INSTANCE_ETC_URI='file:/Users/marycochran/git/AMQ7Samples/broker-cluster
 
 
 # Java Opts
-JAVA_ARGS=" -XX:+PrintClassHistogram -XX:+UseG1GC -Xms512M -Xmx2G -Dhawtio.realm=activemq  -Dhawtio.offline="true" -Dhawtio.role=amq -Dhawtio.rolePrincipalClasses=org.apache.activemq.artemis.spi.core.security.jaas.RolePrincipal -Djolokia.policyLocation=${ARTEMIS_INSTANCE_ETC_URI}jolokia-access.xml -Djon.id=amq"
-
+if [ -z "$JAVA_ARGS" ]; then
+    JAVA_ARGS=" -XX:+PrintClassHistogram -XX:+UseG1GC -Xms512M -Xmx2G -Dhawtio.realm=activemq  -Dhawtio.offline=true -Dhawtio.role=amq -Dhawtio.rolePrincipalClasses=org.apache.activemq.artemis.spi.core.security.jaas.RolePrincipal -Djolokia.policyLocation=${ARTEMIS_INSTANCE_ETC_URI}jolokia-access.xml -Djon.id=amq"
+fi
 #
 # Logs Safepoints JVM pauses: Uncomment to enable them
 # In addition to the traditional GC logs you could enable some JVM flags to know any meaningful and "hidden" pause that could
@@ -39,6 +41,10 @@ JAVA_ARGS=" -XX:+PrintClassHistogram -XX:+UseG1GC -Xms512M -Xmx2G -Dhawtio.realm
 # and dependent by JVM background work (eg method deoptimizations, lock unbiasing, JNI, counted loops and obviously GC activity).
 # Replace "all_pauses.log" with the file name you want to log to.
 # JAVA_ARGS="$JAVA_ARGS -XX:+PrintSafepointStatistics -XX:PrintSafepointStatisticsCount=1 -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCApplicationConcurrentTime -XX:+LogVMOutput -XX:LogFile=all_pauses.log"
+
+#
+# Enables the dumping of the java heap when a java.lang.OutOfMemoryError exception is thrown.
+# JAVA_ARGS="$JAVA_ARGS -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${ARTEMIS_OOME_DUMP}"
 
 # Debug args: Uncomment to enable debug
 #DEBUG_ARGS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"

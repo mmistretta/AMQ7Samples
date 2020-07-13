@@ -109,7 +109,12 @@ fi
 WILDFLY_COMMON=`ls $ARTEMIS_HOME/lib/wildfly-common*jar 2>/dev/null`
 if [ -z "$WILDFLY_COMMON" ] ; then
   # this is the one found when the server was created
-  WILDFLY_COMMON="$ARTEMIS_HOME/lib/wildfly-common-1.5.1.Final-redhat-00001.jar"
+  WILDFLY_COMMON="$ARTEMIS_HOME/lib/wildfly-common-1.5.2.Final-redhat-00002.jar"
+fi
+
+if [ -f "$ARTEMIS_OOME_DUMP" ] ; then
+  # backup the last OOME heap dump
+  mv $ARTEMIS_OOME_DUMP $ARTEMIS_OOME_DUMP.bkp
 fi
 
 exec "$JAVACMD" \
