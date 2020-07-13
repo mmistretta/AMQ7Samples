@@ -22,14 +22,14 @@
 
    <!-- artemis.URI.instance is parsed from artemis.instance by the CLI startup.
         This is to avoid situations where you could have spaces or special characters on this URI -->
-   <server configuration="${artemis.URI.instance}/etc/broker.xml"/>
+   <server configuration="file:/Users/marycochran/git/AMQ7Samples/standalone-broker/etc//broker.xml"/>
 
    <!-- The web server is only bound to localhost by default -->
    <web bind="http://localhost:8161" path="web">
        <app url="redhat-branding" war="redhat-branding.war"/>
        <app url="artemis-plugin" war="artemis-plugin.war"/>
-       <app url="dispatch-hawtio-console" war="dispatch-hawtio-console.war"/>
        <app url="console" war="console.war"/>
+       <app url="metrics" war="metrics.war"/>
    </web>
 
 
